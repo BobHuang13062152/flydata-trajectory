@@ -1,0 +1,297 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run preprocess flights",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"c:\\NCHC_DATA\\flydata\\preprocess_flights.py"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Preprocess Flights (install deps + run)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"cd 'c:\\NCHC_DATA\\flydata'; $py='C:/Users/bobhu/AppData/Local/Microsoft/WindowsApps/python3.13.exe'; if (-not (Test-Path $py)) { $py='python' }; & $py -m pip install --disable-pip-version-check -q -r requirements.txt; & $py preprocess_flights.py"
+			]
+		},
+		{
+			"label": "Run Flask app (syntax check)",
+			"type": "shell",
+			"command": "C:/Users/bobhu/AppData/Local/Microsoft/WindowsApps/python3.13.exe -m pyflakes flight_prediction_server_fixed.py",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [
+				"$flake8"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Count trajectories",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; python .\\tools\\count_trajectories.py"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Stitch segments",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; python .\\tools\\stitch_segments.py --input .\\flights_20250807_094940.geojson --output .\\flights_20250807_094940_stitched.geojson --min-points 25"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Stitch segments (min10)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; python .\\tools\\stitch_segments.py --input .\\flights_20250807_094940.geojson --output .\\flights_20250807_094940_stitched_min10.geojson --min-points 10"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Count trajectories (refresh)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; python .\\tools\\count_trajectories.py"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Stitch by id (min25)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; python .\\tools\\stitch_segments.py --input .\\flights_20250807_094940.geojson --output .\\flights_20250807_094940_stitched_by_id.geojson --min-points 25 --group-key id"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Train LSTM on stitched_min10",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; python .\\train_lstm_forecaster.py --seq-len 20 --epochs 2 --batch-size 256 --limit 200000 --stride 2 --min-points 10 --include-glob .\\flights_20250807_094940_stitched_min10.geojson"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Pyflakes server check",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; C:/Users/bobhu/AppData/Local/Microsoft/WindowsApps/python3.13.exe -m pyflakes .\\flight_prediction_server_fixed.py"
+			],
+			"problemMatcher": [
+				"$flake8"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Train LSTM 15 epochs",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; python .\\train_lstm_forecaster.py --seq-len 20 --epochs 15 --batch-size 256 --limit 300000 --stride 2 --min-points 10 --include-glob .\\flights_20250807_094940_stitched_min10.geojson --log-csv .\\models\\lstm_training_log.csv"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Install PyTorch CPU",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 -m pip install --upgrade pip; py -3.13 -m pip install torch --index-url https://download.pytorch.org/whl/cpu"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Train LSTM (quick)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\train_lstm_forecaster.py --min-points 10 --seq-len 20 --epochs 3 --batch-size 256 --limit 150000"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Count trajectories (orig)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; python .\\tools\\count_trajectories.py"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Train LSTM (orig, 3 epochs)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\train_lstm_forecaster.py --files .\\flights_20250807_094940.geojson --min-points 10 --seq-len 20 --epochs 3 --batch-size 256 --limit 150000"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Install NumPy (py313)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 -m pip install --upgrade numpy"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Train LSTM (orig, 3 epochs)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\train_lstm_forecaster.py --files .\\flights_20250807_094940.geojson --min-points 10 --seq-len 20 --epochs 3 --batch-size 256 --limit 150000"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Train LSTM (orig, 10 epochs)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\train_lstm_forecaster.py --files .\\flights_20250807_094940.geojson --min-points 10 --seq-len 20 --epochs 10 --batch-size 256 --limit 150000"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Install Flask deps",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 -m pip install -r .\\requirements.txt"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Generate paper figures",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; $py='py -3.13'; try { & $py .\\paper\\figures\\generate_figures.py } catch { python .\\paper\\figures\\generate_figures.py }"
+			]
+		}
+	]
+}

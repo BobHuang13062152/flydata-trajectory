@@ -1,0 +1,10 @@
+# 最小可執行環境（Python 3.13）
+Flask>=2.3
+Flask-Cors>=4.0
+numpy>=2.0
+geopy>=2.3
+requests>=2.31
+
+# 可選：若要啟用 LSTM 預測，請安裝 PyTorch（依平台與硬體選擇輪子）
+# CPU 版（官方索引）：
+# pip install torch --index-url https://download.pytorch.org/whl/cpu

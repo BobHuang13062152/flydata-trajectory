@@ -1,0 +1,13 @@
+# Ensure consistent line endings
+* text=auto eol=lf
+
+# Windows batch files keep CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Images and binaries
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.pt filter=lfs diff=lfs merge=lfs -text

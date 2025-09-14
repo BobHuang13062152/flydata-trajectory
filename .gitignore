@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# VS Code
+.vscode/*
+!.vscode/tasks.json
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large data and artifacts
+flights_*\.geojson
+models/*
+!models/README.md
+paper/figures/generate_figures.log
+output*.csv
+output*.txt
+output_*/
+*.zip
+*.dat
+optimization_results_*.json
+project/flights.geojson
+project/ref_db.pkl
+project/
+
+# Tests and diagnostics (not part of runtime)
+test_*.py
+smoke_test_api.py
+system_ready_check.py
+system_diagnostic.html
+test_google_maps.html
+
+# Dev/bench scripts not needed for runtime
+bayesian_optimizer.py
+tools/
+scripts/
+*diagnose*.bat
+*start_*.bat
+*quick_start*.bat
+*launch_*.bat
+check_latest_data.py
+densify_geojson.py
+pdf_analyzer.py
+simple_*.py
+map_test.html
+basic_test.html
+leaflet_version.html
+demo_simplified.html
+demo_with_real_data.html
+map.html
+flight_timeline_map.html
+flight_analysis_ui.html
+flight_demo.py
+flight_analysis_system.py
+flight_similarity_demo.py
+flight_prediction_server.py
+flight_prediction_server_fixed.bak.py
+preprocess.py
+requirements_enhanced.txt
+README_START.md
+MATLAB_Learning_Summary.md
+*.pdf
+train_lstm_forecaster.py
+lstm_predictor.py
+
+# Paper drafts (untrack by default; toggle if you publish the paper here)
+paper/*.tex
+paper/*.md
+paper/figures/*.svg
+
+# Logs
+*.log
