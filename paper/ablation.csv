@@ -1,0 +1,5 @@
+setting,top1_hit_rate,ade_km_mean,rmse_km_mean,end_km_p50,end_km_p90,latency_ms_mean
+bbox_on+subseq_on+dir_on,0.750,10.1,13.2,14.8,26.7,289.7
+bbox_off+subseq_on+dir_on,0.750,10.1,13.2,14.8,26.7,687.3
+bbox_on+subseq_off+dir_on,0.625,12.8,16.1,18.9,33.5,198.4
+bbox_on+subseq_on+dir_off,0.625,11.3,14.7,16.2,31.8,275.1

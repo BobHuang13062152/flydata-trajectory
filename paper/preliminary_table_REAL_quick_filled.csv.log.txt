@@ -1,0 +1,65 @@
+Primary: C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_quick.csv
+Output : C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_quick_filled.csv
+Sources:
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_practical.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_practical_20251020_週一10.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_practical_partial10.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_practical_partial15.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_practical_partial5.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_friendly.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_small.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_small_partial2.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_small_partial4.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_small_partial6.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_small_partial8.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_quick_poster.csv
+  - C:\NCHC_DATA\flydata\paper\preliminary_table_REAL_20251020_週一1.csv
+  - C:\NCHC_DATA\flydata\paper\poster_ready\preliminary_table_REAL_20251020_週一1.csv
+  - C:\NCHC_DATA\flydata\preliminary_table_REAL_20251020_週一1.csv
+  - C:\NCHC_DATA\flydata\preliminary_table_REAL_quick.csv
+
+Fills:
+  - EUCLIDEAN.latency_ms_mean: filled with '64565.5' from preliminary_table_REAL_practical.csv
+  - EUCLIDEAN.latency_ms_ci95_lo: filled with '64565.5' from preliminary_table_REAL_practical.csv
+  - EUCLIDEAN.latency_ms_ci95_hi: filled with '64565.5' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.ade_km_mean: filled with '189.692' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.ade_km_ci95_lo: filled with '99.821' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.ade_km_ci95_hi: filled with '298.967' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.rmse_km_mean: filled with '207.246' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.rmse_km_ci95_lo: filled with '114.269' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.rmse_km_ci95_hi: filled with '320.09' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.end_km_p50: filled with '180.838' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.end_km_p90: filled with '627.507' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.latency_ms_mean: filled with '34909.1' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.latency_ms_ci95_lo: filled with '23838.1' from preliminary_table_REAL_practical.csv
+  - CONSENSUS.latency_ms_ci95_hi: filled with '47196.2' from preliminary_table_REAL_practical.csv
+  - SUBSEQ_DTW.latency_ms_mean: filled with '51000.6' from preliminary_table_REAL_practical_20251020_週一10.csv
+  - SUBSEQ_DTW.latency_ms_ci95_lo: filled with '50062.2' from preliminary_table_REAL_practical_20251020_週一10.csv
+  - SUBSEQ_DTW.latency_ms_ci95_hi: filled with '51875.4' from preliminary_table_REAL_practical_20251020_週一10.csv
+  - DTW.latency_ms_mean: filled with '53700.8' from preliminary_table_REAL_practical_20251020_週一10.csv
+  - DTW.latency_ms_ci95_lo: filled with '52327.3' from preliminary_table_REAL_practical_20251020_週一10.csv
+  - DTW.latency_ms_ci95_hi: filled with '55319.2' from preliminary_table_REAL_practical_20251020_週一10.csv
+  - SUBSEQ_DTW.ade_km_mean: filled with '365.757' from preliminary_table_REAL_quick_poster.csv
+  - SUBSEQ_DTW.ade_km_ci95_lo: filled with '310.894' from preliminary_table_REAL_quick_poster.csv
+  - SUBSEQ_DTW.ade_km_ci95_hi: filled with '420.621' from preliminary_table_REAL_quick_poster.csv
+  - SUBSEQ_DTW.rmse_km_mean: filled with '404.524' from preliminary_table_REAL_quick_poster.csv
+  - SUBSEQ_DTW.rmse_km_ci95_lo: filled with '343.846' from preliminary_table_REAL_quick_poster.csv
+  - SUBSEQ_DTW.rmse_km_ci95_hi: filled with '465.203' from preliminary_table_REAL_quick_poster.csv
+  - SUBSEQ_DTW.end_km_p50: filled with '329.182' from preliminary_table_REAL_quick_poster.csv
+  - SUBSEQ_DTW.end_km_p90: filled with '444.977' from preliminary_table_REAL_quick_poster.csv
+  - DTW.ade_km_mean: filled with '365.757' from preliminary_table_REAL_quick_poster.csv
+  - DTW.ade_km_ci95_lo: filled with '310.894' from preliminary_table_REAL_quick_poster.csv
+  - DTW.ade_km_ci95_hi: filled with '420.621' from preliminary_table_REAL_quick_poster.csv
+  - DTW.rmse_km_mean: filled with '404.524' from preliminary_table_REAL_quick_poster.csv
+  - DTW.rmse_km_ci95_lo: filled with '343.846' from preliminary_table_REAL_quick_poster.csv
+  - DTW.rmse_km_ci95_hi: filled with '465.203' from preliminary_table_REAL_quick_poster.csv
+  - DTW.end_km_p50: filled with '329.182' from preliminary_table_REAL_quick_poster.csv
+  - DTW.end_km_p90: filled with '444.977' from preliminary_table_REAL_quick_poster.csv
+  - EUCLIDEAN.ade_km_mean: filled with '365.757' from preliminary_table_REAL_quick_poster.csv
+  - EUCLIDEAN.ade_km_ci95_lo: filled with '310.894' from preliminary_table_REAL_quick_poster.csv
+  - EUCLIDEAN.ade_km_ci95_hi: filled with '420.621' from preliminary_table_REAL_quick_poster.csv
+  - EUCLIDEAN.rmse_km_mean: filled with '404.524' from preliminary_table_REAL_quick_poster.csv
+  - EUCLIDEAN.rmse_km_ci95_lo: filled with '343.846' from preliminary_table_REAL_quick_poster.csv
+  - EUCLIDEAN.rmse_km_ci95_hi: filled with '465.203' from preliminary_table_REAL_quick_poster.csv
+  - EUCLIDEAN.end_km_p50: filled with '329.182' from preliminary_table_REAL_quick_poster.csv
+  - EUCLIDEAN.end_km_p90: filled with '444.977' from preliminary_table_REAL_quick_poster.csv

@@ -1,0 +1,46 @@
+{
+  "system_info": {
+    "name": "船隻軌跡預測系統",
+    "version": "1.0.0",
+    "test_date": "2025-08-04T16:57:03.512748"
+  },
+  "algorithms": [
+    {
+      "name": "DTW",
+      "description": "動態時間規整"
+    },
+    {
+      "name": "Kalman",
+      "description": "卡爾曼濾波"
+    },
+    {
+      "name": "Weather",
+      "description": "氣象影響模型"
+    }
+  ],
+  "test_trajectory": {
+    "points": [
+      [
+        25.0,
+        121.5
+      ],
+      [
+        25.01,
+        121.51
+      ],
+      [
+        25.02,
+        121.52
+      ],
+      [
+        25.03,
+        121.53
+      ],
+      [
+        25.04,
+        121.54
+      ]
+    ],
+    "description": "測試用手繪軌跡"
+  }
+}

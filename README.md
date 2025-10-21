@@ -33,19 +33,25 @@ py -3.13 .\flight_prediction_server_fixed.py
 
 資料檔案：請放於根目錄，檔名為 `flights*.geojson`（自動載入；略過含 `stitched` 的檔）。
 
-## 🌐 API 概覽
+## 🌐 API 概覽（支援多演算法 + 共識）
 
 - `GET /api/statistics`：系統統計與可用功能
 - `GET /api/flights`：航班摘要
-- `POST /api/identify`：相似性搜尋（支援 DTW/SUBSEQ_DTW/LCSS/…）
+- `POST /api/identify`：相似性搜尋（支援 DTW、SUBSEQ_DTW、EUCLIDEAN、LCSS、FRECHET/DFD、HAUSDORFF、EDR、ERP）
 - `POST /api/identify-all`：多演算法 Top‑k 對照
-- `POST /api/forecast-consensus`：Top‑k 共識預測 + 啟發式混合
+- `POST /api/forecast-consensus`：Top‑k 共識預測 + 啟發式混合（(Algo)+CONSENSUS 管線：可搭配 subseq 與方向檢查）
 - `POST /api/predict-trajectory`：路徑預測（model=heuristic|lstm）
 - `GET /api/openflights/*`：OpenFlights 查詢（若資料存在）
 
 簡易健康檢查頁面：`/test`
 
-## 🔮 啟用 LSTM（可選）
+## 🔮 管線命名與 LSTM（可選）
+
+對照海報與圖標：
+- (Algo)+CONSENSUS：先用指定演算法（DTW/LCSS/Fréchet/DFD/Hausdorff/EDR/ERP/Euclidean；可選子序列與方向檢查）取 Top‑N，做共識延續
+- DTW+LSTM：DTW 輔助定位/配對後，以輕量 LSTM 進行延續
+
+啟用 LSTM：
 
 1) 安裝 CPU 版 PyTorch：
 
@@ -62,6 +68,8 @@ POST /api/predict-trajectory?model=lstm&horizon=20
 ```
 
 若缺少模型或未安裝 PyTorch，系統會自動退回啟發式預測。
+
+更多本地重現與端點範例，見 `REPRODUCIBLE_API.md`。
 
 ## 🛠️ 故障排除
 

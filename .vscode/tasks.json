@@ -292,6 +292,245 @@
 				"-Command",
 				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; $py='py -3.13'; try { & $py .\\paper\\figures\\generate_figures.py } catch { python .\\paper\\figures\\generate_figures.py }"
 			]
+		},
+		{
+			"label": "Run offline REAL quick eval",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\offline_real_eval.py"
+			],
+			"problemMatcher": [
+				"$eslint - stylish"
+			],
+			"group": "build"
+		},
+		{
+			"label": "REAL-small evaluation (server-based)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\tools\\evaluate_methods.py --out-csv 'paper\\preliminary_table_REAL_small.csv' --ablation-out 'paper\\ablation_REAL_small.csv' --with-ci --bootstrap 500 --queries 8 --pool 400 --query-len 2 --horizon 3 --end-threshold-km 100.0 --time-budget-s 45 --methods DTW SUBSEQ_DTW FRECHET EUCLIDEAN CONSENSUS"
+			]
+		},
+		{
+			"label": "Generate REAL figures from timestamped CSVs",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\paper\\figures\\generate_real_figures.py --prelim 'paper\\preliminary_table_REAL_20251020_週一1.csv' --ablation 'paper\\ablation_REAL_20251020_週一1.csv'"
+			]
+		},
+		{
+			"label": "Offline quick (poster, n=1000)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\offline_real_eval.py --samples 1000 --query-len 2 --horizon 3 --out-prelim 'paper\\preliminary_table_REAL_quick_poster.csv' --out-ablation 'paper\\ablation_REAL_quick_poster.csv'"
+			]
+		},
+		{
+			"label": "Render figures from poster quick CSVs",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\paper\\figures\\generate_real_figures.py --prelim 'paper\\preliminary_table_REAL_quick_poster.csv' --ablation 'paper\\ablation_REAL_quick_poster.csv'"
+			]
+		},
+		{
+			"label": "REAL-small (q=8,pool=400,checkpoint)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\tools\\evaluate_methods.py --out-csv 'paper\\preliminary_table_REAL_small.csv' --ablation-out 'paper\\ablation_REAL_small.csv' --with-ci --bootstrap 500 --queries 8 --pool 400 --query-len 2 --horizon 3 --end-threshold-km 100.0 --time-budget-s 45 --methods DTW SUBSEQ_DTW FRECHET EUCLIDEAN CONSENSUS --checkpoint-every 2"
+			]
+		},
+		{
+			"label": "Start Flask server (background)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; Start-Process -WindowStyle Minimized -FilePath 'py' -ArgumentList '-3.13 .\\flight_prediction_server_fixed.py'"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "REAL-small (q=8,pool=400,checkpoint) - rerun",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\tools\\evaluate_methods.py --out-csv 'paper\\preliminary_table_REAL_small.csv' --ablation-out 'paper\\ablation_REAL_small.csv' --with-ci --bootstrap 500 --queries 8 --pool 400 --query-len 2 --horizon 3 --end-threshold-km 100.0 --time-budget-s 45 --methods DTW SUBSEQ_DTW FRECHET EUCLIDEAN CONSENSUS --checkpoint-every 2 --progress"
+			]
+		},
+		{
+			"label": "Fill REAL quick table from existing CSVs",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\tools\\fill_missing_prelim_from_existing.py --primary .\\paper\\preliminary_table_REAL_quick.csv --out .\\paper\\preliminary_table_REAL_quick_filled.csv"
+			]
+		},
+		{
+			"label": "Regenerate REAL figures (filled prelim)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\paper\\figures\\generate_real_figures.py --prelim .\\paper\\preliminary_table_REAL_quick_filled.csv"
+			]
+		},
+		{
+			"label": "Regenerate ALL figures",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\paper\\figures\\generate_figures.py; py -3.13 .\\paper\\figures\\generate_real_figures.py --prelim .\\paper\\preliminary_table_REAL_quick_filled.csv; py -3.13 .\\paper\\figures\\generate_extra_figures.py"
+			]
+		},
+		{
+			"label": "Regenerate reviewer figures (demo)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\paper\\figures\\generate_demo_results.py; py -3.13 .\\paper\\figures\\generate_reviewer_figures.py"
+			]
+		},
+		{
+			"label": "Regenerate REAL+Extra figures after tweaks",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\paper\\figures\\generate_real_figures.py --prelim .\\paper\\preliminary_table_REAL_quick_filled.csv; py -3.13 .\\paper\\figures\\generate_extra_figures.py"
+			]
+		},
+		{
+			"label": "Recompute Top-1 (tiny) and regenerate figure",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; $server='http://localhost:5000'; try { Invoke-WebRequest -UseBasicParsing \"$server/api/statistics\" -TimeoutSec 3 | Out-Null } catch { Start-Process -FilePath py -ArgumentList '-3.13', 'flight_prediction_server_fixed.py' -WorkingDirectory 'c:\\NCHC_DATA\\flydata'; Start-Sleep -Seconds 3 }; py -3.13 .\\tools\\recompute_top1_from_api.py --server $server --n 12 --qlen 3 --threshold-km 100 --in .\\paper\\preliminary_table_REAL_quick_filled.csv --out .\\paper\\preliminary_table_REAL_quick_filled.csv; py -3.13 .\\paper\\figures\\generate_real_figures.py --prelim .\\paper\\preliminary_table_REAL_quick_filled.csv"
+			]
+		},
+		{
+			"label": "Regenerate all figs after removing Top-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\paper\\figures\\generate_real_figures.py --prelim .\\paper\\preliminary_table_REAL_quick_filled.csv; py -3.13 .\\paper\\figures\\generate_reviewer_figures.py"
+			]
+		},
+		{
+			"label": "Regenerate enhanced extra figures",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; $server='http://localhost:5000'; try { Invoke-WebRequest -UseBasicParsing \"$server/api/statistics\" -TimeoutSec 3 | Out-Null } catch { Start-Process -FilePath py -ArgumentList '-3.13', 'flight_prediction_server_fixed.py' -WorkingDirectory 'c:\\NCHC_DATA\\flydata'; Start-Sleep -Seconds 3 }; py -3.13 .\\paper\\figures\\generate_extra_figures.py"
+			]
+		},
+		{
+			"label": "Regenerate comparison figure titles",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\paper\\figures\\generate_real_figures.py --prelim .\\paper\\preliminary_table_REAL_quick_filled.csv"
+			]
+		},
+		{
+			"label": "Prepare poster-ready figures",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoLogo",
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-Command",
+				"Set-Location -Path 'c:\\NCHC_DATA\\flydata'; py -3.13 .\\tools\\prepare_poster_figs.py"
+			]
 		}
 	]
 }

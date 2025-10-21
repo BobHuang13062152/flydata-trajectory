@@ -1,0 +1,6 @@
+method,n,top1_hit_rate,top1_hit_rate_ci95_lo,top1_hit_rate_ci95_hi,ade_km_mean,ade_km_ci95_lo,ade_km_ci95_hi,rmse_km_mean,rmse_km_ci95_lo,rmse_km_ci95_hi,end_km_p50,end_km_p90,latency_ms_mean,latency_ms_ci95_lo,latency_ms_ci95_hi
+DTW,4,0.000,0.000,0.000,nan,nan,nan,nan,nan,nan,nan,nan,4655.1,3393.8,6772.5
+SUBSEQ_DTW,4,0.000,0.000,0.000,nan,nan,nan,nan,nan,nan,nan,nan,4173.7,3259.2,5565.3
+FRECHET,4,0.000,0.000,0.000,nan,nan,nan,nan,nan,nan,nan,nan,4237.6,3320.8,5530.9
+EUCLIDEAN,4,0.000,0.000,0.000,nan,nan,nan,nan,nan,nan,nan,nan,3132.3,2595.0,3853.3
+CONSENSUS,4,nan,nan,nan,272.969,180.042,365.897,321.010,193.471,430.977,464.296,616.635,14264.7,2077.1,32201.8

@@ -593,7 +593,7 @@ def forecast_consensus():
         if not query_path or len(query_path) < 2:
             return jsonify({'error': '路徑數據不足'}), 400
 
-        algo = request.args.get('algo', 'SUBSEQ_DTW').upper()
+    algo = request.args.get('algo', 'SUBSEQ_DTW').upper()
         use_subseq = request.args.get('subseq', 'true').lower() == 'true' or algo == 'SUBSEQ_DTW'
         stride = request.args.get('stride', 1, type=int)
         fast = request.args.get('fast', 'true').lower() == 'true'
@@ -704,13 +704,37 @@ def forecast_consensus():
                     except Exception:
                         coords_eval = coords
                 if use_subseq:
-                    dist, start = subsequence_dtw_distance(query_path, coords_eval, stride)
+                    # Support generic subsequence search for multiple algorithms
+                    base_algo = algo
+                    if base_algo == 'SUBSEQ_DTW':
+                        base_algo = 'DTW'
+                    try:
+                        dist, start = subsequence_distance_generic(query_path, coords_eval, base_algo, stride)
+                    except Exception:
+                        # Fallback to DTW-based subsequence if generic fails
+                        dist, start = subsequence_dtw_distance(query_path, coords_eval, stride)
                     # In fast mode the start index is relative to coords_eval; avoid mis-slicing
                     if fast:
                         start = -1
                 else:
                     start = -1
-                    dist = dtw_distance(query_path, coords_eval) if algo == 'DTW' else euclidean_distance(query_path, coords_eval)
+                    # Direct full-trajectory distance by selected algorithm
+                    if algo == 'DTW' or algo == 'SUBSEQ_DTW':
+                        dist = dtw_distance(query_path, coords_eval)
+                    elif algo == 'EUCLIDEAN':
+                        dist = euclidean_distance(query_path, coords_eval)
+                    elif algo == 'LCSS':
+                        dist = lcss_distance(query_path, coords_eval)
+                    elif algo == 'FRECHET' or algo == 'DFD':
+                        dist = frechet_distance(query_path, coords_eval)
+                    elif algo == 'HAUSDORFF':
+                        dist = hausdorff_distance(query_path, coords_eval)
+                    elif algo == 'EDR':
+                        dist = edr_distance(query_path, coords_eval)
+                    elif algo == 'ERP':
+                        dist = erp_distance(query_path, coords_eval)
+                    else:
+                        dist = dtw_distance(query_path, coords_eval)
                 if not np.isfinite(dist) or dist < 0:
                     continue
                 sims.append({'flight': f['id'], 'score': float(dist), 'start': int(start) if start is not None else -1, 'coords': coords})
@@ -1776,7 +1800,12 @@ def optimize_parameters():
 
 @app.route('/api/algorithm-info')
 def get_algorithm_info():
-    return jsonify({'standard_algorithms': ['DTW', 'SUBSEQ_DTW', 'EUCLIDEAN', 'LCSS', 'FRECHET', 'HAUSDORFF', 'EDR', 'ERP'], 'enhanced_algorithms_available': ENHANCED_ALGORITHMS_AVAILABLE, 'lstm_predictor_available': LSTM_PREDICTOR_AVAILABLE, 'bayesian_optimizer_available': BAYESIAN_OPTIMIZER_AVAILABLE})
+    return jsonify({
+        'standard_algorithms': ['DTW', 'SUBSEQ_DTW', 'EUCLIDEAN', 'LCSS', 'FRECHET', 'DFD', 'HAUSDORFF', 'EDR', 'ERP'],
+        'enhanced_algorithms_available': ENHANCED_ALGORITHMS_AVAILABLE,
+        'lstm_predictor_available': LSTM_PREDICTOR_AVAILABLE,
+        'bayesian_optimizer_available': BAYESIAN_OPTIMIZER_AVAILABLE
+    })
 
 
 @app.route('/')

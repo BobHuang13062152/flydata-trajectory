@@ -1,5 +1,35 @@
 # Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+.env*/
+.venv*/
+
+# VS Code
+.vscode/
+
+# Data & outputs
+*.geojson.lock
+*.tmp
+*.log
+*.bak
+*.cache
+output*.csv
+output*.txt
+output*.zip
+paper/figures/*.png
+paper/figures/*.svg
+paper/figures/poster_ready/*
+models/*.pt
+
+# OS/junk
+.DS_Store
+Thumbs.db
+# Python
+__pycache__/
 *.py[cod]
 *.pyo
 *.pyd
@@ -58,6 +88,8 @@ scripts/
 *start_*.bat
 *quick_start*.bat
 *launch_*.bat
+# Keep the primary launcher in repo
+!start_server.bat
 check_latest_data.py
 densify_geojson.py
 pdf_analyzer.py

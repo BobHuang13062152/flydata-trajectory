@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗺️ 地圖測試 - 簡單版本</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 10px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .header h1 {
+            margin-bottom: 10px;
+            color: #64b5f6;
+        }
+        
+        .status {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+        
+        #map {
+            flex: 1;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .diagnostic {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+        }
+        
+        button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ 地圖載入測試</h1>
+            <button onclick="testGoogleMaps()">測試 Google Maps</button>
+            <button onclick="testBackend()">測試後端服務</button>
+            <button onclick="reloadMap()">重新載入地圖</button>
+            <button onclick="showDiagnostic()">系統診斷</button>
+        </div>
+        
+        <div id="map"></div>
+        <div id="diagnostic" class="diagnostic" style="display: none;"></div>
+    </div>
+
+    <div class="status" id="status">🔍 正在檢查系統狀態...</div>
+
+    <script>
+        let map;
+        let diagnosticInfo = [];
+
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+            console.log(message);
+            addDiagnostic(message);
+        }
+
+        function addDiagnostic(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            diagnosticInfo.push(`[${timestamp}] ${message}`);
+        }
+
+        function showDiagnostic() {
+            const diagnosticDiv = document.getElementById('diagnostic');
+            diagnosticDiv.style.display = diagnosticDiv.style.display === 'none' ? 'block' : 'none';
+            diagnosticDiv.innerHTML = diagnosticInfo.join('<br>');
+        }
+
+        // Google Maps 錯誤處理
+        function gm_authFailure() {
+            updateStatus('❌ Google Maps API 認證失敗');
+        }
+
+        function testGoogleMaps() {
+            updateStatus('🔍 測試 Google Maps API...');
+            
+            if (typeof google === 'undefined') {
+                updateStatus('❌ Google Maps API 未載入');
+                return;
+            }
+            
+            if (!google.maps) {
+                updateStatus('❌ Google Maps 物件未找到');
+                return;
+            }
+            
+            updateStatus('✅ Google Maps API 載入成功');
+        }
+
+        function testBackend() {
+            updateStatus('🔍 測試後端服務連線...');
+            
+            fetch('/api/statistics')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    updateStatus(`✅ 後端連線成功！載入 ${data.total_flights} 個航班`);
+                })
+                .catch(error => {
+                    updateStatus(`❌ 後端連線失敗: ${error.message}`);
+                    console.error('後端錯誤:', error);
+                });
+        }
+
+        function initMap() {
+            updateStatus('🗺️ 開始初始化地圖...');
+            
+            try {
+                // 檢查 Google Maps API
+                if (typeof google === 'undefined' || !google.maps) {
+                    throw new Error('Google Maps API 未正確載入');
+                }
+
+                // 創建地圖
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 8,
+                    center: { lat: 24.0, lng: 121.0 },
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    styles: [
+                        {
+                            featureType: "all",
+                            elementType: "geometry.fill",
+                            stylers: [{ color: "#f5f5f5" }]
+                        }
+                    ]
+                });
+
+                // 添加一個測試標記
+                const marker = new google.maps.Marker({
+                    position: { lat: 25.0330, lng: 121.5654 }, // 台北101
+                    map: map,
+                    title: '測試標記 - 台北101',
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: '#ff0000',
+                        fillOpacity: 0.8,
+                        strokeWeight: 2,
+                        strokeColor: '#ffffff'
+                    }
+                });
+
+                updateStatus('✅ 地圖載入成功！可以看到台北101標記');
+                
+                // 測試後端連線
+                setTimeout(testBackend, 1000);
+                
+            } catch (error) {
+                updateStatus(`❌ 地圖初始化失敗: ${error.message}`);
+                console.error('地圖錯誤:', error);
+            }
+        }
+
+        function reloadMap() {
+            updateStatus('🔄 重新載入地圖...');
+            
+            // 清除現有地圖
+            const mapDiv = document.getElementById('map');
+            mapDiv.innerHTML = '';
+            
+            // 重新初始化
+            setTimeout(() => {
+                if (typeof google !== 'undefined' && google.maps) {
+                    initMap();
+                } else {
+                    updateStatus('❌ Google Maps API 未載入，正在重新載入頁面...');
+                    setTimeout(() => location.reload(), 2000);
+                }
+            }, 500);
+        }
+
+        // 頁面載入檢查
+        window.addEventListener('load', function() {
+            updateStatus('📋 檢查頁面載入狀態...');
+            
+            // 檢查地圖容器
+            const mapContainer = document.getElementById('map');
+            if (!mapContainer) {
+                updateStatus('❌ 地圖容器未找到');
+                return;
+            }
+            
+            updateStatus('✅ 頁面載入完成，等待 Google Maps...');
+        });
+
+        // 檢查網路連線
+        if (navigator.onLine) {
+            updateStatus('🌐 網路連線正常');
+        } else {
+            updateStatus('❌ 無網路連線');
+        }
+
+        // 網路狀態變化監聽
+        window.addEventListener('online', () => {
+            updateStatus('🌐 網路連線已恢復');
+        });
+
+        window.addEventListener('offline', () => {
+            updateStatus('❌ 網路連線中斷');
+        });
+    </script>
+
+    <!-- 載入 Google Maps API -->
+    <script>
+        // 動態載入 Google Maps API
+        function loadGoogleMaps() {
+            updateStatus('📥 載入 Google Maps API...');
+            
+            const script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB2rNDbGRGTVubn0aQw2NZP38UH_igS3LU&callback=initMap';
+            script.async = true;
+            script.defer = true;
+            
+            script.onerror = function() {
+                updateStatus('❌ Google Maps API 載入失敗');
+            };
+            
+            document.head.appendChild(script);
+        }
+
+        // 頁面載入後開始
+        window.addEventListener('load', loadGoogleMaps);
+    </script>
+</body>
+</html>
