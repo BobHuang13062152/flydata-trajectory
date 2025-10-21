@@ -4,14 +4,19 @@
 
 ## 🚀 快速啟動（Windows PowerShell）
 
-1) 安裝套件（Python 3.13）
+1) 克隆或下載本專案到你的電腦，並進入專案目錄
 
 ```powershell
-Set-Location -Path 'C:\NCHC_DATA\flydata'
+cd path\to\flydata-trajectory
+```
+
+2) 安裝套件（Python 3.13 或 3.10+）
+
+```powershell
 py -3.13 -m pip install -r .\requirements.txt
 ```
 
-2) 啟動服務
+3) 啟動服務
 
 ```powershell
 py -3.13 .\flight_prediction_server_fixed.py

@@ -8,6 +8,13 @@
 - PowerShell
 
 ## 安裝依賴
+
+先進入專案目錄（假設你已克隆或下載到本地）：
+```powershell
+cd path\to\flydata-trajectory
+```
+
+安裝 Python 套件：
 ```powershell
 py -3.13 -m pip install -r .\requirements.txt
 ```
